@@ -74,6 +74,9 @@
 1. [MODEL] Adjust heat effect on ENG1+2 - @bouveng (Johan Bouveng)
 1. [PFD] Fixed speed tape outline at low speeds - @beheh (Benedict Etzel)
 1. [FM] Fetch transition alt and level from SimBrief - @tracernz (Mike)
+1. [TCAS] Implemented traffic advisories, resolution advisories, and collision avoidance logic - @wpine215 (Iceman) @2hwk (2Cas#1022)
+1. [PFD] Implemented TCAS guidance on vertical speed tape - @wpine215 (Iceman)
+1. [SOUNDS] Connected TCAS TA/RA logic to TCAS Wwise events - @wpine215 (Iceman)  @2hwk (2Cas#1022)
 
 ## 0.7.0
 
