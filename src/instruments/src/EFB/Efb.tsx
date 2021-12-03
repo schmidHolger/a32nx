@@ -198,5 +198,6 @@ const Efb = () => {
         throw new Error('Invalid content state provided');
     }
 };
+Efb.whyDidYouRender = true;
 
 export default Efb;

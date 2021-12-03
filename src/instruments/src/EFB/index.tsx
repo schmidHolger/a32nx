@@ -1,3 +1,5 @@
+import './wdyr';
+
 import React, { useEffect } from 'react';
 import { MemoryRouter as Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
@@ -38,7 +40,7 @@ const EFBLoad = () => {
         </Router>
     );
 };
-
+EFBLoad.whyDidYouRender = true;
 readSettingsFromPersistentStorage();
 
 render(<FailuresOrchestratorProvider><EFBLoad /></FailuresOrchestratorProvider>);

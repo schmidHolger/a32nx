@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { useInteractionEvents, useUpdate } from './hooks';
 
 /**
@@ -238,18 +238,19 @@ const SimVarProvider: React.FC = ({ children }) => {
         }
     };
 
+    const value = {
+        retrieve,
+        update,
+        register,
+        unregister,
+    };
     return (
-        <InternalProvider value={{
-            retrieve,
-            update,
-            register,
-            unregister,
-        }}
-        >
+        <context.Provider value={value}>
             { children }
-        </InternalProvider>
+        </context.Provider>
     );
 };
+SimVarProvider.whyDidYouRender = true;
 
 /**
  * The useSimVar hook provides an easy way to read and write SimVars from React.
