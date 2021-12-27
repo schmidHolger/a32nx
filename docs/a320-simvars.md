@@ -11,6 +11,7 @@
 1. [Throttle Mapping System](#throttle-mapping-system)
 1. [Engine and FADEC System](#engine-and-fadec-system)
 1. [Air Conditioning / Pressurisation / Ventilation](#air-conditioning--pressurisation--ventilation)
+1. [Pneumatic](#pneumatic)
 
 ## Uncategorized
 
@@ -805,6 +806,28 @@
     - Bool
     - NW STRG DISC memo indication should show on ecam if true
 
+- A32NX_TILLER_PEDAL_DISCONNECT
+    - Bool
+    - True when tiller disconnect button is pressed
+        Tiller button to be binded on "TOGGLE WATER RUDDER"
+
+- A32NX_NOSE_WHEEL_POSITION
+    - Percent over 100
+    - Position of nose steering wheel animation [0;1] 0 left, 0.5 middle
+
+- A32NX_TILLER_HANDLE_POSITION
+    - Percent over 100
+    - Position of tiller steering handle animation [0;1] 0 left, 0.5 middle
+
+- A32NX_AUTOPILOT_NOSEWHEEL_DEMAND
+    - Percent over 100
+    - Steering demand from autopilot to BSCU [-1;1] -1 left, 0 middle
+
+- A32NX_REALISTIC_TILLER_ENABLED
+    - Bool
+    - 0 for legacy mode (steering with rudder). 1 for realistic mode with tiller axis
+        Tiller axis to be binded on "ENGINE 4 MIXTURE AXIS"
+
 - A32NX_HYD_{loop_name}_EPUMP_LOW_PRESS
     - Bool
     - Electric pump of {loop_name} hydraulic circuit is active but pressure is too low
@@ -907,6 +930,14 @@
     - Bool
     - Auto brake panel push button for MAX mode is pressed
 
+- A32NX_FM_LS_COURSE
+    - Number<Degrees | -1>
+    - Landing system course. Values, in priority order:
+        - Pilot entered course
+        - Database course
+        - Course received from LOC when LOC available
+        - -1 when invalid
+
 - A32NX_FMGC_FLIGHT_PHASE
     - Enum
     - Holds the FMGCs current flight phase
@@ -940,6 +971,70 @@
       --- | ---
       0 | Retracted
       1 | Full extension
+
+- A32NX_LEFT_FLAPS_POSITION_PERCENT
+    - Percent
+    - Indicates the angle of the left flaps out of 40 degrees
+
+- A32NX_RIGHT_FLAPS_POSITION_PERCENT
+    - Percent
+    - Indicates the angle of the right flaps out of 40 degrees
+
+- A32NX_LEFT_SLATS_POSITION_PERCENT
+    - Percent
+    - Indicates the angle of the left slats out of 27 degrees
+
+- A32NX_RIGHT_SLATS_POSITION_PERCENT
+    - Percent
+    - Indicates the angle of the right slats out of 27 degrees
+
+- A32NX_LEFT_FLAPS_TARGET_ANGLE
+    - Degrees
+    - Indicates the target angle of the left flaps
+      according to the configuration.
+
+- A32NX_RIGHT_FLAPS_TARGET_ANGLE
+    - Degrees
+    - Indicates the target angle of the right flaps
+      according to the configuration.
+
+- A32NX_LEFT_SLATS_TARGET_ANGLE
+    - Degrees
+    - Indicates the target angle of the left slats
+      according to the configuration.
+
+- A32NX_RIGHT_SLATS_TARGET_ANGLE
+    - Degrees
+    - Indicates the target angle of the right slats
+      according to the configuration.
+
+- A32NX_LEFT_FLAPS_ANGLE
+    - Degrees
+    - The actual angle of the left flaps
+
+- A32NX_RIGHT_FLAPS_ANGLE
+    - Degrees
+    - The actual angle of the right flaps
+
+- A32NX_LEFT_SLATS_ANGLE
+    - Degrees
+    - The actual angle of the left slats
+
+- A32NX_RIGHT_SLATS_ANGLE
+    - Degrees
+    - The actual angle of the right slats
+
+- A32NX_FLAPS_CONF_INDEX
+    - Number
+    - Indicates the desired flap configuration index according to the table
+    - Value | Meaning
+      --- | ---
+      0 | Conf0
+      1 | Conf1
+      2 | Conf1F
+      3 | Conf2
+      4 | Conf3
+      5 | ConfFull
 
 - A32NX_SPOILERS_ARMED
     - Bool
@@ -1119,10 +1214,10 @@
     - Number (Kilograms)
     - Indicates the weight of the selected payload station
     - {stationIndex}
-        - 6 + 1 | FWD BAGGAGE/CONTAINER
-        - 7 + 1 | AFT CONTAINER
-        - 8 + 1 | AFT BAGGAGE
-        - 9 + 1 | AFT BULK/LOOSE
+        - 5 | FWD BAGGAGE/CONTAINER
+        - 6 | AFT CONTAINER
+        - 7 | AFT BAGGAGE
+        - 8 | AFT BULK/LOOSE
 
 - A32NX_MCDU_{side}_ANNUNC_{annunciator}
     - Boolean
@@ -1166,6 +1261,15 @@
 - A32NX_RUDDER_PEDAL_POSITION
     - Number
     - Provides the rudder pedal position
+      Value | Meaning
+      --- | ---
+      -100 | full left
+      0 | neutral
+      100 | full right
+
+- A32NX_RUDDER_PEDAL_ANIMATION_POSITION
+    - Number
+    - Provides the rudder pedal position including rudder trim for animation
       Value | Meaning
       --- | ---
       -100 | full left
@@ -1395,6 +1499,7 @@ In the variables below, {number} should be replaced with one item in the set: { 
       ALT_CST_CPT | 21
       CLB | 22
       DES | 23
+      FINAL | 24
       GS_CPT | 30
       GS_TRACK | 31
       LAND | 32
@@ -1413,6 +1518,7 @@ In the variables below, {number} should be replaced with one item in the set: { 
       CLB | 2
       DES | 3
       GS | 4
+      FINAL | 5
 
 - A32NX_FMA_EXPEDITE_MODE
     - Boolean
@@ -1659,6 +1765,11 @@ In the variables below, {number} should be replaced with one item in the set: { 
       FPA_SPEED | 4
       VS_SPEED | 5
 
+- A32NX_FG_ALTITUDE_CONSTRAINT
+    - Number in ft
+    - Used for managed climb/descend
+    - Indicates an altitude constraint to follow
+
 - A32NX_FG_TARGET_ALTITUDE
     - Number in ft
     - Used for vertical guidance in mode DES
@@ -1668,6 +1779,20 @@ In the variables below, {number} should be replaced with one item in the set: { 
     - Number in fpm or degrees depending on requested mode
     - Used for vertical guidance in mode DES
     - Indicates the target vertical speed
+
+- A32NX_FG_RNAV_APP_SELECTED
+    - Boolean
+    - Used for FINAL mode selection
+    - Indicates if an RNAV approach is selected. If it is true, pressing the APPR button
+      results in the FINAL mode being armed, instead of G/S and LOC
+
+- A32NX_FG_FINAL_CAN_ENGAGE
+    - Boolean
+    - Indicates if the FINAL vertical mode can engage
+    - FINAL mode will engage if :
+      - This Simvar is true
+      - NAV mode is engaged
+      - FINAL mode is armed
 
 ## Autothrust System
 
@@ -2011,3 +2136,140 @@ In the variables below, {number} should be replaced with one item in the set: { 
     - {number}
         - 1
         - 2
+
+## Pneumatic
+
+- A32NX_PNEU_ENG_{number}_IP_PRESSURE:
+    - Pressure in intermediate pressure compression chamber
+    - PSI
+    - {number}
+        - 1
+        - 2
+
+- A32NX_PNEU_ENG_{number}_HP_PRESSURE:
+    - Pressure in high pressure compression chamber
+    - PSI
+    - {number}
+        - 1
+        - 2
+
+- A32NX_PNEU_ENG_{number}_TRANSFER_PRESSURE:
+    - Pressure between IP/HP valves but before the pressure regulating valve
+    - PSI
+    - {number}
+        - 1
+        - 2
+
+- A32NX_PNEU_ENG_{number}_PRECOOLER_INLET_PRESSURE:
+    - Pressure at the precooler inlet for engine bleed system
+    - PSI
+    - {number}
+        - 1
+        - 2
+
+- A32NX_PNEU_ENG_{number}_PRECOOLER_OUTLET_PRESSURE:
+    - Pressure at theh precooler outlet for engine bleed system
+    - PSI
+    - {number}
+        - 1
+        - 2
+
+- A32NX_PNEU_ENG_{number}_STARTER_CONTAINER_PRESSURE:
+    - Pressure behind the starter valve of the engine
+    - PSI
+    - {number}
+        - 1
+        - 2
+
+- A32NX_PNEU_ENG_{number}_IP_TEMPERATURE:
+    - Temperature in intermediate pressure compression chamber
+    - Degree celsius
+    - {number}
+        - 1
+        - 2
+
+- A32NX_PNEU_ENG_{number}_HP_TEMPERATURE:
+    - Temperature in high pressure compression chamber
+    - Degree celsius
+    - {number}
+        - 1
+        - 2
+
+- A32NX_PNEU_ENG_{number}_TRANSFER_TEMPERATURE:
+    - Temperature between IP/HP valves but before the pressure regulating valve
+    - Degree celsius
+    - {number}
+        - 1
+        - 2
+
+- A32NX_PNEU_ENG_{number}_PRECOOLER_INLET_TEMPERATURE:
+    - Temperature at the precooler inlet for engine bleed system
+    - Degree celsius
+    - {number}
+        - 1
+        - 2
+
+- A32NX_PNEU_ENG_{number}_PRECOOLER_OUTLET_TEMPERATURE:
+    - Temperature at the precooler outlet for engine bleed system
+    - Degree celsius
+    - {number}
+        - 1
+        - 2
+
+- A32NX_PNEU_ENG_{number}_STARTER_CONTAINER_TEMPERATURE:
+    - Temperature behind the starter valve of the engine
+    - Degree celsius
+    - {number}
+        - 1
+        - 2
+
+- A32NX_PNEU_ENG_{number}_IP_VALVE_OPEN:
+    - Indicates whether the intermediate pressure bleed air valve is open
+    - Bool
+    - {number}
+        - 1
+        - 2
+
+- A32NX_PNEU_ENG_{number}_HP_VALVE_OPEN:
+    - Indicates whether the high pressure bleed air valve is open
+    - Bool
+    - {number}
+        - 1
+        - 2
+
+- A32NX_PNEU_ENG_{number}_PR_VALVE_OPEN:
+    - Indicates whether the pressure regulating valve is open
+    - Bool
+    - {number}
+        - 1
+        - 2
+
+- A32NX_PNEU_ENG_{number}_STARTER_VALVE_OPEN:
+    - Indicates whether the starter valve is open.
+    - Bool
+    - {number}
+        - 1
+        - 2
+
+- A32NX_PNEU_XBLEED_VALVE_OPEN:
+    - Indicates whether the cross bleed air valve is open
+    - Bool
+
+- A32NX_PNEU_PACK_{number}_FLOW_VALVE_FLOW_RATE:
+    - Indicates the flow rate through the pack flow valve
+    - Gallon per second
+    - {number}
+        - 1
+        - 2
+
+- A32NX_OVHD_PNEU_ENG_{number}_BLEED_PB_IS_AUTO:
+    - Indicates whether the engine bleed air is on
+    - Is aliased from aircraft variable A:BLEED AIR ENGINE
+    - Bool
+    - {number}
+        - 1
+        - 2
+
+- A32NX_OVHD_PNEU_ENG_{number}_BLEED_PB_HAS_FAULT:
+    - Indicates whether the fault light is on for the engine bleed push button
+    - Bool

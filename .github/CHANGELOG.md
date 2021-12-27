@@ -66,10 +66,41 @@
 1. [AP] Added support for event AUTOPILOT_DISENGAGE_SET to disengage AP - @aguther (Andreas Guther)
 1. [AP] Reduced speed margin of speed protection to 5 kn - @aguther (Andreas Guther)
 1. [MODEL] Removed glass due to issues with brightness in clouds since SU6 - @aguther (Andreas Guther)
+1. [ECAM] Converted ECAM SD cabin pressure page to React - @RichardPilbery (tricky_dicky#3571)
 1. [FBW] Reduced rotation law maximum pitch rate from 12°/s to 8°/s - @aguther (Andreas Guther)
 1. [AP] Added support for events AP_MACH_INC/DEC and AP_ALT_INC/DEC - @aguther (Andreas Guther)
 1. [SOUND] Added ALT increment selector and fixed ISIS sounds - @ImenesFBW (Imenes)
 1. [AP] Added support for other default events to basically push/pull all FCU buttons - @aguther (Andreas Guther)
+1. [MCDU] Fix backlight, brightness - @tracernz (Mike)
+1. [MODEL] Adjust heat effect on ENG1+2 - @bouveng (Johan Bouveng)
+1. [PFD] Fixed speed tape outline at low speeds - @beheh (Benedict Etzel)
+1. [FM] Fetch transition alt and level from SimBrief - @tracernz (Mike)
+1. [FBW] Intermediate support for aileron keyboard events - @aguther (Andreas Guther)
+1. [FLIGHT MODEL] Fixed station locations and loads consistent with real A320 W&B manual - @ghosh9691
+1. [MCDU] Boarding and W/B AOC Pages update with Simbrief Integration - @viniciusfont
+1. [MCDU] Updated boarding logic, separate loading for pax and baggage - @sidnov (Sid)
+1. [FLIGHT MODEL] Updated OEW/dry operating weight, max payload, station weights - @sidnov (Sid)
+1. [EFB/UI] Override in-game fuel UI and fuel initialization - @Taz5150 (TazX [Z+2]#0405)
+1. [FCU] FCU backlight is fed from proper bus - @tracernz (Mike)
+1. [HYD] Realistic hydraulic nose steering - @crocket6 (crocket)
+1. [CLK/ND] Fixed/Improved chrono & ET behavior on time shift - @vkrizan (Viliam)
+1. [AP] Added TCAS modes for Autopilot and Flight Director guidance - @aguther (Andreas Guther)
+1. [PFD] Added new messages and modes for TCAS - @lukecologne (lukecologne#1156)
+1. [FDR] Added additional data to the FDR - @aguther (Andreas Guther)
+1. [ATHR] Fixed ATHR being armed in flight when TOGA applied without GA condition - @aguther (Andreas Guther)
+1. [ECAM] Fixed gross weight being shown without engines running - @BlueberryKing (BlueberryKing)
+1. [FLIGHT MODEL] Fixes co-pilot not being shown in external view -  @donstim (donbikes#4084)
+1. [BLEED] Replace default bleed system - @BlueberryKing (BlueberryKing)
+1. [ENGINE/ MODEL] Implement engine shutdown and realistic engine animation - @Taz5150 (TazX [Z+2]#0405)
+1. [ATSU] Use https for SimBrief - @tracernz (Mike)
+1. [FM] Stored waypoints - @tracernz (Mike)
+1. [ATSU] Import lat/lon waypoints correctly from SimBrief - @tracernz (Mike)
+1. [MCDU] Added manual ILS tuning by ident on RAD NAV page - @tracernz (Mike)
+1. [MCDU] Support manual entry of forward LS course - @tracernz (Mike)
+1. [MCDU] Increase timeout for airport loading - @tracernz (Mike)
+1. [AP] Fixed CLB not engaging correctly on take-off - @aguther (Andreas Guther)
+1. [AP] Added time delay to ALT condition - @aguther (Andreas Guther)
+1. [LIGHTS] Add external PARK BRK LT - @bouveng (Johan Bouveng)
 
 ## 0.7.0
 
@@ -251,8 +282,6 @@
 1. [MISC] Sync settings across instruments - @tracernz (Mike)
 1. [MCDU] Remove some settings from MCDU the are now in the FlyPad - @tracernz (Mike)
 1. [EFB] Persist sound and EFB settings correctly - @tracernz (Mike)
-1. [FLIGHT MODEL] Fixed station locations and loads consistent with real A320 W&B manual - @ghosh9691
-1. [MCDU] Boarding and W/B AOC Pages update with Simbrief Integration - @viniciusfont
 
 ## 0.6.0
 
