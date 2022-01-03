@@ -1,6 +1,5 @@
-import { IconCheckbox } from '@tabler/icons';
 import React, { FC } from 'react';
-import { HouseDoor, Clipboard, Truck, Compass, BroadcastPin, ExclamationDiamond, Gear, Calculator, Check } from 'react-bootstrap-icons';
+import { HouseDoor, Clipboard, Truck, Compass, BroadcastPin, ExclamationDiamond, Gear, Calculator } from 'react-bootstrap-icons';
 import { Link, useHistory } from 'react-router-dom';
 
 export const ToolBar = () => (
@@ -26,9 +25,6 @@ export const ToolBar = () => (
             </ToolBarButton>
             <ToolBarButton to="/failures">
                 <ExclamationDiamond size={35} />
-            </ToolBarButton>
-            <ToolBarButton to="/checklists">
-                <Check size={35} />
             </ToolBarButton>
         </div>
 

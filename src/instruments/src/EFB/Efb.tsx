@@ -25,7 +25,6 @@ import { fetchSimbriefDataAction, initialState as simbriefInitialState } from '.
 
 import { NotificationsContainer, Notification } from './UIMessages/Notification';
 import { FbwLogo } from './Assets/FbwLogo';
-import { Checklists } from './Checklists/Checklists';
 
 const navigraph = new NavigraphClient();
 
@@ -181,7 +180,7 @@ const Efb = () => {
                                             <Failures />
                                         </Route>
                                         <Route path="/checklists">
-                                            <Checklists/>
+                                            <Checklists />
                                         </Route>
                                         <Route path="/settings">
                                             <Settings />
