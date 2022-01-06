@@ -27,7 +27,7 @@ import OutputDisplay from '../../Components/Form/OutputDisplay/OutputDisplay';
 import { useSimVar } from '../../../Common/simVars';
 import { MetarParserType } from '../../../Common/metarTypes';
 import { useAppDispatch, useAppSelector } from '../../Store/store';
-import { clearLandingValues, setLandingValues } from '../../Store/features/performance';
+import { clearLandingValues, initialState, setLandingValues } from '../../Store/features/performance';
 
 const poundsToKgs = 0.453592;
 
@@ -141,13 +141,13 @@ export const LandingWidget = () => {
     };
 
     const handleWindMagnitudeChange = (value: string): void => {
-        let magnitude: number | undefined = parseInt(value);
+        let windMagnitude: number | undefined = parseInt(value);
 
-        if (Number.isNaN(magnitude)) {
-            magnitude = undefined;
+        if (Number.isNaN(windMagnitude)) {
+            windMagnitude = undefined;
         }
 
-        dispatch(setLandingValues({ windMagnitude: magnitude }));
+        dispatch(setLandingValues({ windMagnitude }));
     };
 
     const handleWeightChange = (value: string): void => {
@@ -281,7 +281,7 @@ export const LandingWidget = () => {
 
     return (
         <div className="flex flex-grow">
-            <div className="overflow-hidden p-6 mr-3 w-9/12 rounded-2xl bg-navy-lighter h-efb-nav">
+            <div className="overflow-hidden p-6 mr-3 w-9/12 text-white rounded-2xl bg-navy-lighter h-efb-nav">
                 <div className="w-full">
                     <div className="mb-4 text-center">
                         <div className="flex flex-1 justify-center mx-2">
@@ -294,6 +294,7 @@ export const LandingWidget = () => {
                                     className="my-1.5 w-56"
                                     label="Wind Direction"
                                     value={windDirection}
+                                    placeholder="°"
                                     min={0}
                                     max={360}
                                     padding={3}
@@ -305,7 +306,7 @@ export const LandingWidget = () => {
                                     className="my-1.5 w-56"
                                     label="Wind Magnitude"
                                     value={windMagnitude}
-                                    placeholder="KTS"
+                                    placeholder="kts"
                                     min={0}
                                     decimalPrecision={1}
                                     onChange={handleWindMagnitudeChange}
@@ -326,7 +327,7 @@ export const LandingWidget = () => {
                                     className="my-1.5 w-56"
                                     label="QNH"
                                     value={pressure}
-                                    placeholder="mb"
+                                    placeholder="hPa"
                                     min={800}
                                     max={1200}
                                     decimalPrecision={2}
@@ -337,7 +338,7 @@ export const LandingWidget = () => {
                                     className="my-1.5 w-56"
                                     label="Rwy Altitude"
                                     value={altitude}
-                                    placeholder='" ASL'
+                                    placeholder="ft ASL"
                                     min={-2000}
                                     max={20000}
                                     decimalPrecision={0}
@@ -348,6 +349,7 @@ export const LandingWidget = () => {
                                     className="my-1.5 w-56"
                                     label="Rwy Heading"
                                     value={runwayHeading}
+                                    placeholder="°"
                                     min={0}
                                     max={360}
                                     padding={3}
@@ -358,16 +360,17 @@ export const LandingWidget = () => {
                                 <SelectInput
                                     className="my-1.5 w-56"
                                     label="Rwy Condition"
-                                    defaultValue={runwayCondition}
+                                    defaultValue={initialState.landing.runwayCondition}
+                                    value={runwayCondition}
                                     onChange={handleRunwayConditionChange}
                                     dropdownOnTop
                                     options={[
-                                        { value: 0, displayValue: 'Dry' },
-                                        { value: 1, displayValue: 'Good' },
-                                        { value: 2, displayValue: 'Good-Medium' },
-                                        { value: 3, displayValue: 'Medium' },
-                                        { value: 4, displayValue: 'Medium-Poor' },
-                                        { value: 5, displayValue: 'Poor' },
+                                        { value: 0, displayValue: 'Dry (6)' },
+                                        { value: 1, displayValue: 'Good (5)' },
+                                        { value: 2, displayValue: 'Good-Medium (4)' },
+                                        { value: 3, displayValue: 'Medium (3)' },
+                                        { value: 4, displayValue: 'Medium-Poor (2)' },
+                                        { value: 5, displayValue: 'Poor (1)' },
                                     ]}
                                 />
                             </div>
@@ -400,7 +403,7 @@ export const LandingWidget = () => {
                                     className="my-1.5 w-56"
                                     label="Approach Speed"
                                     value={approachSpeed}
-                                    placeholder="KTS"
+                                    placeholder="kts"
                                     min={90}
                                     max={350}
                                     decimalPrecision={0}
@@ -412,7 +415,7 @@ export const LandingWidget = () => {
                                     className="my-1.5 w-56"
                                     label="Weight"
                                     value={weight}
-                                    placeholder="KG"
+                                    placeholder="kg"
                                     min={41000}
                                     max={100000}
                                     decimalPrecision={0}
@@ -423,18 +426,20 @@ export const LandingWidget = () => {
                                 <SelectInput
                                     className="my-1.5 w-56"
                                     label="Flaps"
-                                    defaultValue={flaps}
+                                    defaultValue={initialState.landing.flaps}
+                                    value={flaps}
                                     onChange={handleFlapsChange}
                                     reverse
                                     options={[
-                                        { value: 1, displayValue: 'Full' },
+                                        { value: 1, displayValue: 'FULL' },
                                         { value: 0, displayValue: 'CONF 3' },
                                     ]}
                                 />
                                 <SelectInput
                                     className="my-1.5 w-56"
                                     label="Overweight Proc"
-                                    defaultValue={overweightProcedure}
+                                    defaultValue={initialState.landing.overweightProcedure}
+                                    value={overweightProcedure}
                                     onChange={handleOverweightProcedureChange}
                                     reverse
                                     options={[
@@ -445,7 +450,8 @@ export const LandingWidget = () => {
                                 <SelectInput
                                     className="my-1.5 w-56"
                                     label="Reverse Thrust"
-                                    defaultValue={reverseThrust}
+                                    defaultValue={initialState.landing.reverseThrust}
+                                    value={reverseThrust}
                                     onChange={handleReverseThrustChange}
                                     reverse
                                     options={[
@@ -460,6 +466,7 @@ export const LandingWidget = () => {
                                 onClick={handleCalculateLanding}
                                 className={calculateButtonClass}
                                 type="button"
+                                disabled={!areInputsValid()}
                             >
                                 Calculate
                             </button>
@@ -492,7 +499,7 @@ export const LandingWidget = () => {
                     </div>
                 </div>
             </div>
-            <div className="overflow-hidden p-6 ml-3 w-3/12 rounded-2xl bg-navy-lighter h-efb-nav">
+            <div className="overflow-hidden p-6 ml-3 w-3/12 text-white rounded-2xl bg-navy-lighter h-efb-nav">
                 <RunwayVisualizationWidget mainLength={displayedRunwayLength} labels={runwayVisualizationLabels} runwayNumber={runwayNumber} />
             </div>
         </div>

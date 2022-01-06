@@ -1,24 +1,24 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 import { LandingFlapsConfig, LandingRunwayConditions } from '../../Performance/Calculators/LandingCalculator';
 import { DistanceLabel } from '../../Performance/Widgets/RunwayVisualizationWidget';
-import { TypedAction } from "../store";
+import { TypedAction } from '../store';
 
 type TPerformanceLanding = {
     icao: string,
-    windDirection: number,
-    windMagnitude: number,
-    weight: number,
-    runwayHeading: number,
-    approachSpeed: number,
+    windDirection?: number,
+    windMagnitude?: number,
+    weight?: number,
+    runwayHeading?: number,
+    approachSpeed?: number,
     flaps: LandingFlapsConfig,
     runwayCondition: LandingRunwayConditions,
     reverseThrust: boolean,
-    altitude: number,
-    slope: number,
-    temperature: number,
+    altitude?: number,
+    slope?: number,
+    temperature?: number,
     overweightProcedure: boolean,
-    pressure: number,
-    runwayLength: number,
+    pressure?: number,
+    runwayLength?: number,
     maxAutobrakeLandingDist: number,
     mediumAutobrakeLandingDist: number,
     lowAutobrakeLandingDist: number,
@@ -31,23 +31,23 @@ type TPerformanceState = {
     landing: TPerformanceLanding,
 }
 
-const initialState: TPerformanceState = {
+export const initialState: TPerformanceState = {
     landing: {
         icao: '',
-        windDirection: 0,
-        windMagnitude: 0,
-        weight: 0,
-        runwayHeading: 0,
-        approachSpeed: 0,
-        flaps: LandingFlapsConfig.Conf3,
+        windDirection: undefined,
+        windMagnitude: undefined,
+        weight: undefined,
+        runwayHeading: undefined,
+        approachSpeed: undefined,
+        flaps: LandingFlapsConfig.Full,
         runwayCondition: LandingRunwayConditions.Dry,
         reverseThrust: false,
-        altitude: 0,
-        slope: 0,
-        temperature: 0,
+        altitude: undefined,
+        slope: undefined,
+        temperature: undefined,
         overweightProcedure: false,
-        pressure: 0,
-        runwayLength: 0,
+        pressure: undefined,
+        runwayLength: undefined,
         maxAutobrakeLandingDist: 0,
         mediumAutobrakeLandingDist: 0,
         lowAutobrakeLandingDist: 0,
@@ -58,7 +58,7 @@ const initialState: TPerformanceState = {
 };
 
 const performanceSlice = createSlice({
-    name: "performance",
+    name: 'performance',
     initialState,
     reducers: {
         setLandingValues: (state, action: TypedAction<Partial<TPerformanceLanding>>) => {
@@ -69,7 +69,7 @@ const performanceSlice = createSlice({
         clearLandingValues: (state) => {
             state.landing = initialState.landing;
         },
-    }
+    },
 });
 
 export const { setLandingValues, clearLandingValues } = performanceSlice.actions;

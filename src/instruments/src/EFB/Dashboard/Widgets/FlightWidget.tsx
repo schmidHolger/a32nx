@@ -53,7 +53,7 @@ const FlightWidget = () => {
     }
 
     return (
-        <div className="overflow-hidden p-6 mr-3 w-2/5 h-full rounded-lg border-2 shadow-md border-theme-secondary">
+        <div className="overflow-hidden p-6 mr-3 w-2/5 h-full rounded-lg border-2 shadow-md border-theme-accent">
             <div className="flex flex-col justify-between h-full">
                 <div className="w-full">
                     <div className="mb-6 text-center">
@@ -132,12 +132,12 @@ const FlightWidget = () => {
                         onClick={() => {
                             fetchSimbriefDataAction(simbriefUserId ?? '').then((action) => {
                                 dispatch(action);
-                            }).catch(() => {
+                            }).catch((e) => {
                                 uiMessages.pushNotification(
                                     <Notification
                                         type="ERROR"
                                         title="SimBrief Error"
-                                        message="An error occurred when trying to fetch your SimBrief data."
+                                        message={e.message}
                                     />,
                                 );
                             });

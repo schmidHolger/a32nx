@@ -69,10 +69,10 @@ const GroundSpeedManual = () => {
 
             <div className="flex flex-row justify-center">
                 <Button
-                    text="SYNC"
-                    type={BUTTON_TYPE.BLUE_OUTLINE}
-                    onClick={() => dispatch(setTodGroundSpeedMode(TOD_INPUT_MODE.AUTO))}
-                />
+                text="SYNC"
+                type={BUTTON_TYPE.BLUE_OUTLINE}
+                onClick={() => dispatch(setTodGroundSpeedMode(TOD_INPUT_MODE.AUTO))}
+            />
             </div>
         </div>
     );
