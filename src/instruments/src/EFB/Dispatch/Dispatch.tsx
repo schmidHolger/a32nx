@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+import { BoardingPage } from './Pages/BoardingPage';
 import { OverviewPage } from './Pages/OverviewPage';
 import { LoadSheetWidget } from './Pages/LoadsheetPage';
 import { Navbar } from '../Components/Navbar';
@@ -12,6 +13,7 @@ export const Dispatch = () => {
         'Overview',
         'OFP',
         'Fuel',
+        'Boarding',
     ];
 
     function currentPage() {
@@ -24,10 +26,14 @@ export const Dispatch = () => {
             return (
                 <FuelPage />
             );
-        default:
+        case 0:
             return (
                 <OverviewPage />
             );
+        case 3:
+            return (<BoardingPage />);
+        default:
+            return (null);
         }
     }
 

@@ -161,7 +161,7 @@ const Efb = () => {
         setPowerState(PowerStates.LOADING);
         setTimeout(() => {
             setPowerState(PowerStates.LOADED);
-        }, 2500);
+        }, 100);
     };
 
     useInteractionEvent('A32NX_EFB_POWER', () => {
