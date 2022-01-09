@@ -1,7 +1,7 @@
 import React, { } from 'react';
-import { Passenger, PaxBoardingStatus } from './PaxSim';
-import './Aircraft.css';
+import { Passenger, PaxBoardingStatus } from './BoardingContextProvider';
 import { AircraftGroup } from './AircraftGroup';
+import './Aircraft.css';
 
 type AircraftWithPassengersProps = {
     height: number;
@@ -22,10 +22,12 @@ export const AircraftWithPassengers = ({ height, passengers }:AircraftWithPassen
     };
 
     const passengersElements = passengers.map((p, idx) => (
-        <React.Fragment key={idx}>
-            <path className="passengerPath" id={`motion-${idx}`} d={p.svgMotionPath} />
-            <path className={passengerClass(p.status)} id={`passenger-${idx}`} d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" transform="scale(0.4 0.4)" />
-        </React.Fragment>
+        <path
+            className={passengerClass(p.status)}
+            id={`passenger-${idx}`}
+            d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"
+            transform="scale(0.4 0.4)"
+        />
     ));
 
     return (

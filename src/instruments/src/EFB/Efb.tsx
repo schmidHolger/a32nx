@@ -4,6 +4,7 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import { useSimVar } from '@instruments/common/simVars';
 import { useInteractionEvent } from '@instruments/common/hooks';
 import { Battery, BatteryCharging } from 'react-bootstrap-icons';
+import { BoardingProvider } from './Dispatch/Boarding/BoardingContextProvider';
 import { UIMessagesProvider, useUIMessages } from './UIMessages/Provider';
 import { usePersistentNumberProperty, usePersistentProperty } from '../Common/persistence';
 import NavigraphClient, { NavigraphContext } from './ChartsApi/Navigraph';
@@ -103,6 +104,9 @@ const Efb = () => {
     const [dc2BusIsPowered] = useSimVar('L:A32NX_ELEC_DC_2_BUS_IS_POWERED', 'bool');
     const [batteryLevel, setBatteryLevel] = useState<BatteryStatus>({ level: 100, lastChangeTimestamp: absoluteTime, isCharging: dc2BusIsPowered });
 
+    const [_boardingStartedProp, setBoardingStartedProp] = usePersistentProperty('CONFIG_BOARDING_STARTED', 'false');
+    const [_boardingStartedTimeProp, setBoardingStartedTimeProp] = usePersistentProperty('CONFIG_BOARDING_STARTED_TIME', '0');
+
     useEffect(() => {
         setBatteryLevel((oldLevel:BatteryStatus) => {
             const deltaTs = absoluteTime - oldLevel.lastChangeTimestamp;
@@ -199,9 +203,15 @@ const Efb = () => {
         }
     }, [currentLocalTime, usingAutobrightness]);
 
+    const startupEfb = () => {
+        offToLoaded();
+        setBoardingStartedProp('false');
+        setBoardingStartedTimeProp('0');
+    };
+
     switch (powerState) {
     case PowerStates.SHUTOFF:
-        return <div className="w-screen h-screen" onClick={() => offToLoaded()} />;
+        return <div className="w-screen h-screen" onClick={() => startupEfb()} />;
     case PowerStates.LOADING:
         return <ScreenLoading />;
     case PowerStates.EMPTY:
@@ -210,49 +220,51 @@ const Efb = () => {
         return (
             <NavigraphContext.Provider value={navigraph}>
                 <PowerContext.Provider value={{ powerState, setPowerState }}>
-                    <UIMessagesProvider>
-                        <div className="bg-theme-body">
-                            <ApplicationNotifications />
-                            <StatusBar
-                                batteryLevel={batteryLevel.level}
-                                isCharging={dc2BusIsPowered === 1}
-                            />
-                            <div className="flex flex-row">
-                                <ToolBar />
-                                <div className="pt-14 pr-6 w-screen h-screen text-gray-700">
-                                    <Switch>
-                                        <Route exact path="/">
-                                            <Redirect to="/dashboard" />
-                                        </Route>
-                                        <Route path="/dashboard">
-                                            <Dashboard />
-                                        </Route>
-                                        <Route path="/dispatch">
-                                            <Dispatch />
-                                        </Route>
-                                        <Route path="/ground">
-                                            <Ground />
-                                        </Route>
-                                        <Route path="/performance">
-                                            <Performance />
-                                        </Route>
-                                        <Route path="/navigation">
-                                            <Navigation />
-                                        </Route>
-                                        <Route path="/atc">
-                                            <ATC />
-                                        </Route>
-                                        <Route path="/failures">
-                                            <Failures />
-                                        </Route>
-                                        <Route path="/settings">
-                                            <Settings />
-                                        </Route>
-                                    </Switch>
+                    <BoardingProvider>
+                        <UIMessagesProvider>
+                            <div className="bg-theme-body">
+                                <ApplicationNotifications />
+                                <StatusBar
+                                    batteryLevel={batteryLevel.level}
+                                    isCharging={dc2BusIsPowered === 1}
+                                />
+                                <div className="flex flex-row">
+                                    <ToolBar />
+                                    <div className="pt-14 pr-6 w-screen h-screen text-gray-700">
+                                        <Switch>
+                                            <Route exact path="/">
+                                                <Redirect to="/dashboard" />
+                                            </Route>
+                                            <Route path="/dashboard">
+                                                <Dashboard />
+                                            </Route>
+                                            <Route path="/dispatch">
+                                                <Dispatch />
+                                            </Route>
+                                            <Route path="/ground">
+                                                <Ground />
+                                            </Route>
+                                            <Route path="/performance">
+                                                <Performance />
+                                            </Route>
+                                            <Route path="/navigation">
+                                                <Navigation />
+                                            </Route>
+                                            <Route path="/atc">
+                                                <ATC />
+                                            </Route>
+                                            <Route path="/failures">
+                                                <Failures />
+                                            </Route>
+                                            <Route path="/settings">
+                                                <Settings />
+                                            </Route>
+                                        </Switch>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </UIMessagesProvider>
+                        </UIMessagesProvider>
+                    </BoardingProvider>
                 </PowerContext.Provider>
             </NavigraphContext.Provider>
         );

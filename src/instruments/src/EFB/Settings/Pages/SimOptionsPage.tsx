@@ -27,6 +27,7 @@ export const SimOptionsPage = () => {
     const [dynamicRegistration, setDynamicRegistration] = usePersistentProperty('DYNAMIC_REGISTRATION_DECAL', 'DISABLED');
     const [fpSync, setFpSync] = usePersistentProperty('FP_SYNC', 'LOAD');
     const [boardingRate, setBoardingRate] = usePersistentProperty('CONFIG_BOARDING_RATE', 'REAL');
+    const [boardingSeqenceType, setBoardingSequenceType] = usePersistentProperty('CONFIG_BOARDING_SEQUENCE_TYPE', 'FRONT2BACK');
     const [realisticTiller, setRealisticTiller] = usePersistentProperty('REALISTIC_TILLER_ENABLED', '0');
     const [mcduServerPort, setMcduServerPort] = usePersistentProperty('CONFIG_EXTERNAL_MCDU_PORT', '8080');
 
@@ -58,6 +59,12 @@ export const SimOptionsPage = () => {
         { name: 'Instant', setting: 'INSTANT' },
         { name: 'Fast', setting: 'FAST' },
         { name: 'Real', setting: 'REAL' },
+    ];
+
+    const boardingSequenceType: ButtonType[] = [
+        { name: 'Front to Back', setting: 'FRONT2BACK' },
+        { name: 'Back to Front', setting: 'BACK2FRONT' },
+        { name: 'Random', setting: 'RANDOM' },
     ];
 
     const steeringSeparationButtons: (ButtonType & SimVarButton)[] = [
@@ -160,6 +167,20 @@ export const SimOptionsPage = () => {
                                     enabled
                                     onSelect={() => setBoardingRate(button.setting)}
                                     selected={boardingRate === button.setting}
+                                >
+                                    {button.name}
+                                </SelectItem>
+                            ))}
+                        </SelectGroup>
+                    </SettingItem>
+
+                    <SettingItem name="Boarding Sequence">
+                        <SelectGroup>
+                            {boardingSequenceType.map((button) => (
+                                <SelectItem
+                                    enabled={boardingRate !== 'INSTANT'}
+                                    onSelect={() => setBoardingSequenceType(button.setting)}
+                                    selected={boardingSeqenceType === button.setting}
                                 >
                                     {button.name}
                                 </SelectItem>

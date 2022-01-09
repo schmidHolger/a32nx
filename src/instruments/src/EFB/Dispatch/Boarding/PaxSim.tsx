@@ -1,47 +1,38 @@
-import React, { useEffect } from 'react';
+import { Passenger, PaxBoardingStatus } from './BoardingContextProvider';
 
-export enum PaxBoardingStatus {
-    'WAITING' = 'W',
-    'BOARING' = 'B',
-    'SEATED' = 'S'
-}
-
-export type Passenger = {
-    row: number | undefined;
-    seat: number | undefined;
-    status: PaxBoardingStatus,
-    svgMotionPath: string,
-    distance: number,
-};
 export const NUM_OF_ROWS = 30;
 export const NUM_OF_SEATS = 6;
+
 const ROW_START_Y = [100.3, 112.6, 125, 137.5, 149.5, 161.8, 173.7, 185.8, 198.1, 210.1, 224, 237.4,
     248.8, 259, 269.6, 280.9, 291.8, 302.6, 313.5, 324.2, 335.2, 346.2, 356.9, 368.1,
     378.6, 389.6, 400.5, 411.4, 422.6, 432.9];
 const SEAT_HEIGHT = 6.2;
+const AIRCRAFT_MIDDLE_X = 274;
+const AIRCRAFT_MIDDLE_Y = 82;
 
 const createPaxPath = ({ row, seat }: {row: number, seat: number}) => {
     const { endX, endY } = getEndPos({ row, seat });
-    return `M 244 78 L 258 78 L 268 79.1 L 274 82 L 274 ${endY} L ${endX} ${endY}`;
+    // return `M 244 78 L 258 78 L 268 79.1 L 274 82 L 274 ${endY} L ${endX} ${endY}`;
+    return `M244,78 L258,78 L268,79.1 L${AIRCRAFT_MIDDLE_X},${AIRCRAFT_MIDDLE_Y} L${AIRCRAFT_MIDDLE_X},${endY} L${endX},${endY}`;
 };
 
 const getDistanceForPax = ({ row, seat }: {row: number, seat: number}) => {
     const { endX, endY } = getEndPos({ row, seat });
-    return 30.72 + endY - 82 + Math.abs(274 - endX);
+    return 30.72 + endY - AIRCRAFT_MIDDLE_Y + Math.abs(AIRCRAFT_MIDDLE_X - endX);
 };
 
 const getEndPos = ({ row, seat }: {row: number, seat: number}): {endX:number, endY:number} => {
     const endY = ROW_START_Y[row] + SEAT_HEIGHT / 2;
-    let endX = seat < 3 ? 251.1 + seat * 7.2 : 297.2 - (5 - seat) * 7.2;
+    let endX = seat < (NUM_OF_SEATS / 2) ? 248.1 + seat * 7.2 : 300.2 - (NUM_OF_SEATS - 1 - seat) * 7.2;
     if (row === NUM_OF_ROWS - 2) {
-        if (seat < 3) {
+        if (seat < (NUM_OF_SEATS / 2)) {
             endX += 1;
         } else {
             endX -= 0.7;
         }
     }
     if (row === NUM_OF_ROWS - 1) {
-        if (seat < 3) {
+        if (seat < (NUM_OF_SEATS / 2)) {
             endX += 1.8;
         } else {
             endX -= 1.5;
@@ -74,6 +65,10 @@ export const showRows = (pax: Passenger[]) => {
         let info = '';
         Array.from({ length: NUM_OF_SEATS }).forEach((_s, si) => {
             const thePaxIdx = pax.findIndex((p) => p.row === ri && p.seat === si);
+
+            if (si === NUM_OF_SEATS / 2) {
+                info += '| ';
+            }
             if (thePaxIdx !== -1) {
                 info += `${pax[thePaxIdx].status} `;
             } else {

@@ -63,7 +63,7 @@ module.exports = {
         },
         boxShadow: { lg: '0px 0px 4px 2px rgba(0, 0, 0, 0.5)' },
     },
-    variants: { extend: {} },
+    variants: { extend: { cursor: ['disabled'] } },
     // eslint-disable-next-line global-require
     plugins: [require('@flybywiresim/tailwind-config')],
 };
